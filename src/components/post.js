@@ -1,6 +1,30 @@
 import React, { Component } from "react";
 import "../post.css";
 
+const usuarios = [
+  {
+    value: "all",
+    label: "Motrar Todos",
+    image: ""
+  },
+  {
+    value: "Andre",
+    label: "André ",
+    image:
+      "http://s2.glbimg.com/jsaPuF7nO23vRxQkuJ_V3WgouKA=/e.glbimg.com/og/ed/f/original/2014/06/10/461777879.jpg"
+  },
+  {
+    value: "Stela",
+    label: "Stela",
+    image:
+      "https://osegredo.com.br/wp-content/uploads/2017/09/O-que-as-pessoas-felizes-t%C3%AAm-em-comum-site-830x450.jpg"
+  },
+  {
+    value: "Pedro",
+    label: "Pedro",
+    image: "https://hypescience.com/wp-content/uploads/2013/12/sucesso.jpg"
+  }
+];
 class Post extends Component {
   constructor(props) {
     super();
@@ -33,13 +57,19 @@ class Post extends Component {
   //         if (autor.value === this.post.author) return autor;
   //      })}
 
+  image(post) {
+    const user = usuarios.filter(usuario => {
+      return usuario.value == post.author;
+    })[0];
+    return user.image;
+  }
+
   render() {
     const post = this.props.post;
     return (
       <div className={"post"}>
         <h3 onClick={this.props.onNavigate}>{post.content}</h3>
-        <h5>{post.author}</h5>
-        <small>{post.time}</small>
+
         <div style={likeLine}>
           <p>Likes: {this.state.likes}</p>
           <button
@@ -56,6 +86,11 @@ class Post extends Component {
           >
             Like
           </button>
+        </div>
+        <div style={{ padding: 5 }}>
+          <h5>{post.author} </h5>
+          <img style={{ width: 50, height: 50 }} src={this.image(post)} />
+          <h5>postado em: {post.time}</h5>
         </div>
       </div>
     );
