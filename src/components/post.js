@@ -1,104 +1,95 @@
 import React, { Component } from "react";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import LikeIcon from "@material-ui/icons/ThumbUp";
+import Avatar from "@material-ui/core/Avatar";
+import axios from "axios";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+
 import "../post.css";
 
-const usuarios = [
-  {
-    value: "all",
-    label: "Motrar Todos",
-    image: ""
-  },
-  {
-    value: "Andre",
-    label: "André ",
-    image:
-      "http://s2.glbimg.com/jsaPuF7nO23vRxQkuJ_V3WgouKA=/e.glbimg.com/og/ed/f/original/2014/06/10/461777879.jpg"
-  },
-  {
-    value: "Stela",
-    label: "Stela",
-    image:
-      "https://osegredo.com.br/wp-content/uploads/2017/09/O-que-as-pessoas-felizes-t%C3%AAm-em-comum-site-830x450.jpg"
-  },
-  {
-    value: "Pedro",
-    label: "Pedro",
-    image: "https://hypescience.com/wp-content/uploads/2013/12/sucesso.jpg"
-  }
-];
 class Post extends Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = {
       likes: props.post.initialLikes
     };
     this.doLike = this.doLike.bind(this);
+    this.saveLikesInAPI = this.saveLikesInAPI.bind(this);
   }
-
   doLike() {
     this.setState({ likes: this.state.likes + 1 }, () => {
+      console.log("after");
       console.log("doLike state", this.state);
-      this.saveLikesInStoring();
+      this.saveLikesInStorage();
+    });
+  }
+  saveLikesInAPI() {
+    const post = this.props.post;
+    post.initialLikes = this.state.likes + 1;
+    axios.put("http://localhost:3001/posts/" + post.id, post).then(response => {
+      this.setState({ likes: this.state.likes + 1 });
     });
   }
 
-  saveLikesInStoring() {
+  saveLikesInStorage() {
     const posts = JSON.parse(localStorage.getItem("savedPosts"));
-    //=== string  int  == não compara
-    const updatePosts = posts.map(savedPosts => {
-      if (savedPosts.time === this.props.post.time) {
-        savedPosts.initialLikes = this.state.likes;
+    const updatePosts = posts.map(savedPost => {
+      if (savedPost.time === this.props.post.time) {
+        savedPost.initialLikes = this.state.likes;
       }
-      return savedPosts;
+      return savedPost;
     });
     localStorage.setItem("savedPosts", JSON.stringify(updatePosts));
     console.table(updatePosts);
   }
-  // {this.props.authors.map(autor => {
-  //         if (autor.value === this.post.author) return autor;
-  //      })}
-
-  image(post) {
-    const user = usuarios.filter(usuario => {
-      return usuario.value == post.author;
-    })[0];
-    return user.image;
-  }
 
   render() {
     const post = this.props.post;
+    console.log(this.props);
     return (
-      <div className={"post"}>
-        <h3 onClick={this.props.onNavigate}>{post.content}</h3>
+      <Card style={{ margin: 40 }}>
+        <CardContent>
+          <CardHeader
+            avatar={<Avatar aria-label="Recipe" src={post.imageAuthor} />}
+            title={post.author}
+            subheader={post.time}
+          />
+        </CardContent>
+        <CardMedia
+          onClick={this.props.onNavigate}
+          style={{ height: 0, paddingTop: "56.25%" }}
+          image={post.image}
+          title="Paella dish"
+        />
+        <CardContent>
+          <Typography component="p">{post.content}}</Typography>
+        </CardContent>
 
-        <div style={likeLine}>
-          <p>Likes: {this.state.likes}</p>
-          <button
-            onClick={this.doLike}
-            style={{
-              backgroundColor: "blue",
-              color: "white",
-              fontSize: 16,
-              fontWeight: "bolder",
-              border: "none",
-              borderRadius: 10,
-              padding: 5
-            }}
-          >
-            Like
-          </button>
-        </div>
-        <div style={{ padding: 5 }}>
-          <h5>{post.author} </h5>
-          <img style={{ width: 50, height: 50 }} src={this.image(post)} />
-          <h5>postado em: {post.time}</h5>
-        </div>
-      </div>
+        <CardActions>
+          <div style={likeLine}>
+            <p>Likes: {this.state.likes}</p>
+
+            <IconButton onClick={this.saveLikesInAPI}>
+              <LikeIcon fontSize="large" />
+            </IconButton>
+          </div>
+        </CardActions>
+      </Card>
     );
   }
 }
-export default Post;
+
 const likeLine = {
   display: "flex",
   justifyContent: "space-around",
   height: 40
 };
+
+export default Post;

@@ -1,27 +1,31 @@
 import React, { Component } from "react";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 import Timeline from "./components/timeline";
-import About from "./components/about";
-//{Router } ou Post defaut Post
-import { BrowserRouter, Switch, Route } from "react-router-dom";
 import PostDetails from "./components/postDetails";
+import PostCreator from "./components/postCreator";
 
 class App extends Component {
   showNotFound() {
-    return <div>Pagina não encontrada :(</div>;
+    return <div>Página não encontrada :(</div>;
   }
 
   aboutPage() {
-    return <div>Sobre</div>;
+    const page = (
+      <div>
+        <h1>Sobre esse sistema</h1>
+        <h3>Sou feito em REACT!</h3>
+      </div>
+    );
+    return page;
   }
-
   render() {
-    console.log("asda888888888888sd" + this.props);
     return (
       <div>
         <BrowserRouter>
           <Switch>
-            <Route path="/post/:time" component={PostDetails} />
-            <Route path="/sobre" component={About} />
+            <Route path="/post/:id" component={PostDetails} />
+            <Route path="/sobre" component={this.aboutPage} />
+            <Route path="/criar" component={PostCreator} />
             <Route exact path="/" component={Timeline} />
             <Route path="*" component={this.showNotFound} />
           </Switch>
