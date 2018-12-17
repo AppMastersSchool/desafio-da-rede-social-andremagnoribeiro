@@ -26,8 +26,10 @@ class PostCreator extends Component {
   }
   componentDidMount() {
     this.readUsers();
+    this.setState({ idUserAtual: this.props.match.params.idUser });
   }
   createPost() {
+    //idUser=this.props.match.params.idUser;
     this.setState({ loading: true });
     axios
       .get("http://localhost:3001/author/" + this.state.idUserAtual)
@@ -48,6 +50,7 @@ class PostCreator extends Component {
     axios.post("http://localhost:3001/posts", post).then(response => {
       this.setState({ loading: false });
     });
+    this.setState({ loading: false });
   }
 
   readUsers() {
@@ -57,62 +60,25 @@ class PostCreator extends Component {
   }
 
   handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
-    console.log("asdfasdfasdf4444", this.state.idUserAtual);
+    this.setState({
+      [name]: event.target.value
+    });
   };
-
-  getUser(id) {
-    if (id != -1) {
-      const user = this.state.users.filter(user => {
-        return user.id == this.state.idUserAtual;
-      })[0];
-      return " " + user.image;
-    } else {
-      return false;
-    }
-  }
   render() {
     console.table(this.state.users);
     return (
       <div style={{ padding: 15 }}>
         <div style={{ padding: 15, textAlign: "center" }}>
-          <h1 style={{ display: "flex" }}>
-            Crie seu Post Usuario:
-            {this.getUser(this.state.idUserAtual) ? (
-              <Avatar
-                aria-label="Recipe"
-                src={this.getUser(this.state.idUserAtual)}
-              />
-            ) : (
-              <a> Escolha usuario</a>
-            )}
-          </h1>
+          <h1 style={{ display: "flex" }}>Crie seu Post</h1>
         </div>
-        <FormControl style={{ width: "100%" }}>
-          <NativeSelect
-            value={this.state.idUserAtual}
-            onChange={this.handleChange("idUserAtual")}
-            inputProps={{
-              name: "age",
-              id: "age-native-simple"
-            }}
-          >
-            <option style={{ color: "#b1b4bc" }} value={""}>
-              Selecione um Usuário
-            </option>
 
-            {this.state.users.map((user, i) => {
-              return <option value={user.id}>{user.name}</option>;
-            })}
-          </NativeSelect>
-        </FormControl>
         <h3>Titulo do Post</h3>
         <TextField
           defaultValue="Default Value"
           multiline
           id="filled-multiline-static"
           label="Titulo"
-          rows="4"
+          rows="2"
           onChange={event => {
             const value = event.target.value;
             this.setState({ text: value });

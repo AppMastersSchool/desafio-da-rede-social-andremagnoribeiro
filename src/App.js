@@ -3,6 +3,8 @@ import { Switch, Route, BrowserRouter } from "react-router-dom";
 import Timeline from "./components/timeline";
 import PostDetails from "./components/postDetails";
 import PostCreator from "./components/postCreator";
+import Header from "./components/header";
+import PostsUser from "./components/postsUser";
 
 class App extends Component {
   showNotFound() {
@@ -18,15 +20,18 @@ class App extends Component {
     );
     return page;
   }
+
   render() {
     return (
       <div>
         <BrowserRouter>
           <Switch>
             <Route path="/post/:id" component={PostDetails} />
+            <Route path="/posts/:user" component={PostsUser} />
             <Route path="/sobre" component={this.aboutPage} />
-            <Route path="/criar" component={PostCreator} />
-            <Route exact path="/" component={Timeline} />
+            <Route path="/criar/:idUser" component={PostCreator} />
+            <Route exact path="/" component={Header} />
+            <Route exact path="/time" component={Timeline} />
             <Route path="*" component={this.showNotFound} />
           </Switch>
         </BrowserRouter>
@@ -34,5 +39,6 @@ class App extends Component {
     );
   }
 }
-
+/*
+ */
 export default App;
