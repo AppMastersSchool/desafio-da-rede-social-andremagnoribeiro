@@ -21,3 +21,10 @@ Como proposto em aula, apresentamos o desafio em 6 etapas. Se você concluir ao 
 O prazo pra você enviar o projeto devolta pra este seu repositório é 17 as 5h da manhã. :)
 
 Os alunos que enviarem, receberão antes das 12h de do dia 17 um email de convite confirmando o encontro. 
+
+----------------------------------------------------------------------------------------------------------------------
+Continuação:
+
+Criando banco dados no Firebase
+Implementando funções no projeto para adicionar, remover, atualizar os posts e usuarios.
+
