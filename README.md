@@ -25,6 +25,6 @@ Os alunos que enviarem, receberão antes das 12h de do dia 17 um email de convit
 ----------------------------------------------------------------------------------------------------------------------
 Continuação:
 
-Criando banco dados no Firebase
+Criando banco dados no Firebase;
 Implementando funções no projeto para adicionar, remover, atualizar os posts e usuarios.
 
